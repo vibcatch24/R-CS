@@ -1,0 +1,150 @@
+<html><head><style>body {
+   color: black;
+}
+</style></head><body><h1 id="srubik-s-cube-signature-r-cs-a-program-for-entering-and-encoding-the-state-of-a-rubik-s-cube-into-catch-24-code-">&quot;Rubik&#39;s Cube Signature&quot; (R&#39;CS)</h1>
+<h2 id="introduction">Introduction</h2>
+<ul>
+<li>This program (hereinafter referred to as R&#39;CS) is designed for entering the state (scramble, net layout) of a 3x3x3 Rubik&#39;s Cube and defining its unique code, regardless of the number of moves leading to that state.</li>
+<li>It uses a &quot;smart&quot; input method that helps the user correctly fill in the sticker colors, reducing the input by an average of 1/3 of the total number of colors entered.</li>
+<li>R&#39;CS takes into account the conventions necessary for encoding a position in Catch-24 code and generates it if the position is legitimate.</li>
+</ul>
+<h2 id="terms-and-notations-used">Terms and Notations Used</h2>
+<h3 id="cube-faces-">Cube Faces:</h3>
+<p>Standard face notations:</p>
+<ul>
+<li><code>U</code> - Up</li>
+<li><code>L</code> - Left</li>
+<li><code>F</code> - Front</li>
+<li><code>R</code> - Right</li>
+<li><code>B</code> - Back</li>
+<li><code>D</code> - Down</li>
+</ul>
+<h3 id="face-colors-center-sticker-colors-">Face Colors (Center Sticker Colors):</h3>
+<ul>
+<li>The center colors are <strong>constant</strong> and define the color of the entire face in the solved state:</li>
+<li><code>U</code>: <code>snow</code> (white)</li>
+<li><code>L</code>: <code>orange</code></li>
+<li><code>F</code>: <code>lime</code> (green)</li>
+<li><code>R</code>: <code>red</code></li>
+<li><code>B</code>: <code>dodgerblue</code> (blue)</li>
+<li><code>D</code>: <code>yellow</code></li>
+</ul>
+<h3 id="face-properties-">Face Properties:</h3>
+<ul>
+<li>The position of each face on the net relative to other faces is rigidly defined by the cube&#39;s mechanics.</li>
+<li>The face pairs <code>U</code>-<code>D</code>, <code>F</code>-<code>B</code>, <code>L</code>-<code>R</code> are mutually <strong>opposite</strong>.</li>
+<li>Each face is adjacent to 4 other faces that are <strong>not opposite</strong> to it.</li>
+</ul>
+<h3 id="centers-and-stickers-">Centers and Stickers:</h3>
+<ul>
+<li><p>On the cube net used, there are six centers that do not change their color and 48 stickers, numbered from <code>0</code> to <code>47</code> (see <code>image 1</code>), whose colors can be painted by the user.</p>
+<p><img src="image/image%201.jpeg" alt="Cube net with sticker notations"></p>
+</li>
+</ul>
+<h3 id="cube-slots-elements-">Cube Slots (Elements):</h3>
+<ul>
+<li><strong>Corner Slots:</strong> There are 8 in total. Each has 3 stickers. In the program, they are denoted by the prefix <code>&lt;c&gt;</code> (from <code>c0</code> to <code>c7</code>).</li>
+<li><strong>Edge Slots:</strong> There are 12 in total. Each has 2 stickers. In the program, they are denoted by the prefix <code>&lt;e&gt;</code> (from <code>e0</code> to <code>e11</code>).</li>
+<li><p><strong>Visual Representation:</strong> The numbering of corner and edge slots is shown in <code>image 2</code>.</p>
+<p>  <img src="image/image%202.jpeg" alt="Net with numbering of cube elements"></p>
+</li>
+</ul>
+<h3 id="orientation-markers-and-reference-stickers-">Orientation Markers and Reference Stickers:</h3>
+<ul>
+<li>Orientation markers <code>§</code>, which define the reference stickers of the slots, are used for encoding positions in Catch-24 code.</li>
+<li><strong>For Corners:</strong> The orientation is 0 if the reference stickers of the slots located on the <code>U</code>/<code>D</code> faces match the U or D face (see <code>image 2</code>).</li>
+<li><strong>For Edges:</strong><ol>
+<li>For a slot located in the horizontal U/D layers (e0-e7), the orientation is 0 if its reference stickers match the U or D face.</li>
+<li>For a slot located in the equatorial F/B layer (e8-11), the orientation is 0 if its reference stickers match the F or B face.</li>
+</ol>
+</li>
+</ul>
+<h2 id="sequence-and-algorithm-for-filling-the-net-scramble-">Sequence and Algorithm for Filling the Net (Scramble)</h2>
+<ol>
+<li><strong>Input Sequence:</strong> Filling the stickers with colors occurs sequentially, from <code>0</code> to <code>47</code>. Corner slot sticker numbers are even, edge slot numbers are odd.</li>
+<li><strong>Dynamic 6-Color Palette:</strong> The availability of colors on the palette for the current sticker is determined by the &quot;smart&quot; input rules, defined by the mechanics of the Rubik&#39;s Cube.</li>
+<li><strong>Color Input:</strong> R&#39;CS moves the cursor over the stickers, skipping those already colored based on the rules. The user can also click to select any sticker with a number lower than the active (current) one, which guarantees the erasure of that sticker&#39;s color and the colors of other stickers with higher numbers. The user then selects an available color from the 6-color palette, and the full logic is restored. R&#39;CS has a restriction on erasing stickers in a fully solved position for sticker numbers no greater than 15.</li>
+<li><strong>Backspace Button ⌫ :</strong> Moves the cursor back one sticker and guarantees the erasure of its color and the colors of other stickers with higher numbers. The user can then continue to erase one sticker at a time or select an available color from the palette, and the full logic is restored.</li>
+</ol>
+<h2 id="-smart-input-and-encoding-rules">&quot;Smart&quot; Input and Encoding Rules</h2>
+<ul>
+<li>These rules restrict and/or automatically fill in sticker colors during input.</li>
+<li><strong>Important:</strong> The program&#39;s logic distinguishes between the physical slots of the cube (8 corners, 12 edges, which do not move) and the definitions/assignments of these slots, which describe their colors in the solved state of the cube. &quot;Smart input&quot; analyzes the current colors on the stickers of a physical slot to determine which definition it corresponds to.</li>
+</ul>
+<h3 id="general-principles-">General Principles:</h3>
+<ul>
+<li><strong>Exclusion of Opposite Colors:</strong> Stickers of the same slot cannot have colors of opposite faces.</li>
+<li>Each corner slot belongs to three faces (defined by three centers).</li>
+<li>Each edge slot belongs to two faces (defined by two centers).</li>
+<li>The same color belongs to four corner slots and four edge slots.</li>
+<li><strong>Parity of Position:</strong> The parity of permutations must be even - the sum of the parities of the corner and edge slots must be even.</li>
+</ul>
+<h3 id="rule-for-faces-">Rule for Faces:</h3>
+<ul>
+<li>If any 2 <strong>non-opposite</strong> faces are completely colored with their center colors, the other 4 faces are automatically completed to the solved state of the cube.</li>
+</ul>
+<h3 id="rules-for-corner-slots-">Rules for Corner Slots:</h3>
+<ul>
+<li><strong>Calculating the Third Color:</strong> If two of the three colors for a corner slot are entered, R&#39;CS automatically determines the missing third color (see <code>image 3</code>: auto-detection of sticker 16 of corner slot c1).</li>
+<li><p><strong>Sum of Orientations:</strong> The sum of the orientations of all corner slots modulo 3 must be equal to 0. Taking this into account, when encoding in Catch-24, one symbol (the first, for corner slot c0) is not included in the Catch-24 code.</p>
+<p><img src="image/image%203.jpeg" alt="Cube net with &quot;smart&quot; input"></p>
+</li>
+</ul>
+<h3 id="rules-for-edge-slots-">Rules for Edge Slots:</h3>
+<ul>
+<li><strong>Calculating the Second Color:</strong> If one of the two colors for an edge slot is entered, R&#39;CS checks for the same color among the already completely colored (&quot;solved&quot;) edge slots. If three solved slots with that color are found, R&#39;CS determines the second color for the incomplete slot.</li>
+<li><strong>Sum of Orientations:</strong> The sum of the orientations of all edge slots modulo 2 must be equal to 0. Taking this into account, when encoding in Catch-24, one symbol (the last, for edge slot e11) is not included in the Catch-24 code.</li>
+</ul>
+<h2 id="catch-24-code-">Catch-24 Code:</h2>
+<ul>
+<li>Catch-24 encoding is determined by the colors of the defined slots and their orientation (see <code>image 4</code>. The orientation of the cube slot is written after the hyphen).</li>
+<li>The code contains 18 lowercase characters (from the first 24 lowercase letters of the English alphabet - corresponding to the number of possible positions and orientations in those positions for the 8 corner and 12 edge slots).</li>
+<li>First, 7 corner slot code values are output to the <strong>output string</strong> located to the right of the Copy button, followed by the remaining 11 edge slot values in ascending order.</li>
+<li>The first of the 20 symbols (corner slot c0) and the last symbol (edge slot e11) are not included in the code sequence.</li>
+<li><p>A preliminary code is displayed immediately (as in <code>image 4</code>), acting as a progress bar until the entire cube is colored. Unassigned slot definition symbols are replaced with hyphens.</p>
+<p><img src="image/image%204.jpeg" alt="Preliminary Catch-24 encoding"></p>
+</li>
+<li>To obtain the final code value, upon full coloring of the cube, the preliminary values are character-wise multiplied according to the multiplication table (<code>image 5</code>) by the value inverse to the initial position. The result of this multiplication is the Catch-24 code.</li>
+<li>Examples of character-wise multiplication from the table (<code>image 5</code>): a • x = x, m • f = e, f • i = a. Multiplication is generally not commutative (the result depends on the order of the factors).</li>
+<li>The Catch-24 code is displayed in blue in the <strong>output string</strong> to the right of the Copy button.</li>
+<li>The 18-character Catch-24 code is a digital fingerprint - a signature of any legitimate position of the Rubik&#39;s Cube.</li>
+</ul>
+<h2 id="additional-input-modes">Additional Input Modes</h2>
+<h3 id="catch-24-code-input-mode">Catch-24 Code Input Mode</h3>
+<ul>
+<li>After the full 18-character code is formed, it becomes possible to copy the Catch-24 code to the clipboard with the &quot;Copy&quot; button.</li>
+<li>Simultaneously with pressing the Copy button, the Catch-24 code is placed in the <strong>input string</strong> to the right of the Input button, confirming the copy.</li>
+<li>After entering the Catch-24 code into the input string (by any method), pressing the Input button performs the reverse operation of decoding the Catch-24 code into the colors of the cube position.</li>
+<li><p>On success, the text in the input field turns bright green (lime), and the Input button becomes fully blue.</p>
+<p><img src="image/tests/test%201.jpeg" alt="Catch-24 encoding"></p>
+</li>
+<li>If the position does not correspond to the mechanics of the Rubik&#39;s Cube, a corresponding warning is issued.</li>
+</ul>
+<h3 id="supported-notation-for-the-input-string">Supported Notation for the Input String</h3>
+<ul>
+<li>Standard WCA: Uppercase letters F, B, R, L, U, D with modifiers &#39; (counter-clockwise), 2 (double move), and wide moves, e.g., Fw, Rw&#39;, Uw2.</li>
+<li>For backward compatibility with some scramble tables, two non-standard modifier notations are supported: 1 and 3, e.g., F3 (as F&#39;) and U1 (as U).</li>
+<li>Rotations of the entire cube (x, y, z) are not supported - for R&#39;CS, the starting WCA net is unchangeable.</li>
+</ul>
+<h3 id="input-modes-scramble-and-solution">Input Modes: Scramble and Solution</h3>
+<ul>
+<li>These modes allow entering standard move sequences into the input string and processing them as a Scramble (forward sequence) or as a Solution (inverse sequence). This provides the ability not only to get the Scramble position but also the position in Solution mode from which a known algorithm begins.</li>
+<li><p>A single &quot;Input&quot; button with two active zones is used to control the modes:</p>
+<ol>
+<li>The blue, main, and right part of the button with the text &quot;Input&quot;: Scramble, [Copy] Catch-24 modes. Processes the forward sequence of moves starting from the identity position (solved cube).</li>
+<li><p>The purple zone on the left, with the turn-around icon ↩ : (Solution Mode). In Solution mode, the sequence in the input string will be the solution to the position obtained after pressing the ↩ icon on the left part of the Input button.</p>
+</li>
+</ol>
+</li>
+<p><img src="image/tests/test%202.jpeg" alt="WCA-encoding"></p>
+</li>
+</ol>
+</li>
+<li>If a Solution sequence was processed, the &quot;Input&quot; button will turn fully purple, and a <code>↩</code> symbol will appear at the end of the string in the input field as an additional indicator. The purple color of the button will remain until the next action (Scramble, Reset, or Copy mode).</li>
+<li>In Scramble mode, the &quot;Input&quot; button will adopt a two-zoned purple-blue color.</li>
+<li><p>A Scramble position can simultaneously be a Solution. In that case, the Catch-24 code will not change when switching to Solution mode for the same sequence in the input string.</p>
+<p><img src="image/tests/test%203.jpeg" alt="Scramble/Solution"></p>
+</li>
+</ul>
+<p><img src="image/image%205.jpeg" alt="Catch-24 Encoding (multiplication table)"></p>
+</body></html>

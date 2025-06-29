@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catch-24 Scramble</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="./cubeConstants.js" defer></script>
+    <script type="module" src="./CubeState.js" defer></script>
+    <script type="module" src="./Layout.js" defer></script>
+    <script type="module" src="./Impasto.js" defer></script>
+</head>
+<body>
+    <div class="tool-container">
+  
+      <div id="controls">
+        <div id="left-controls">
+            <div id="color-palette"></div>
+          </div>
+            <button id="reset-button">Reset</button>
+        </div>
+
+      <h1 id="app-title" class="title-header">R'CS readme</h1>
+
+      <div id="cube-container"></div>
+      
+      <div id="position-code-container">
+
+        <div class="code-line">
+          <button id="catch24-button" disabled>Copy</button>
+          <input type="text" id="position-code" class="code-field" readonly>
+        </div>
+  
+        <div class="code-line">
+          
+          <button id="apply-input-button" class="hotzone-button">
+            
+            <span class="hotzone-icon">
+              <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 24 16" 
+              stroke-width="2.0" 
+              stroke="currentColor" 
+              fill="none" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"
+            >
+              <line x1="17" y1="2" x2="4" y2="2"></line>
+            
+              <line x1="4" y1="12" x2="17" y2="12"></line>
+              
+              <path d="M18,2 a5,5 0 0 1 0,10"></path>ы
+            
+              <polyline points="9 9 2 11 8 15"></polyline>
+            </svg>
+            </span>
+            
+            <span class="hotzone-text">Input</span>
+          
+          </button>
+  
+          <input type="text" id="catch24-input" class="code-field" placeholder="Enter scramble/solution or Catch-24 code" autocomplete="off">
+        </div>
+        <div id="readme-container" style="display:none;"></div>
+        <div id="diagnostic-message"></div>
+      </div>
+    </div>
+  
+  </body>
+</html>
