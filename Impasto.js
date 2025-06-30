@@ -26,9 +26,7 @@ const applyInputButton = document.getElementById('apply-input-button')
 const codeCatch24output = document.getElementById('position-code')
 const positionCodeInput = document.getElementById('catch24-input')
 const diagnosticMessage = document.getElementById('diagnostic-message')
-
-// Находим новые элементы
-const titleHeader = document.getElementById('app-title') // <-- ИЗМЕНЕНО
+const titleHeader = document.getElementById('app-title')
 const readmeContainer = document.getElementById('readme-container')
 
 function initializeOrResetCubeState() {

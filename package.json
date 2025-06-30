@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"start": "bun run ./Impasto.js",
-		"build": "bun build ./Impasto.js --outdir ./dist",
+		"build": "bun build ./Impasto.js --outdir ./dist --minify",
 		"deploy": "bun run build && cp index.html style.css readme.html dist/ && cp -r image dist/ && gh-pages -d dist"
 	},
 	"devDependencies": {

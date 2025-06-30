@@ -14,7 +14,7 @@ let middleRadius
 let largeRadius
 let dimensionsInitialized = false
 
-let onLogoReadyCallback = null // 1. Переменная для хранения функции
+let onLogoReadyCallback = null
 
 const catch24Logo = new Image()
 let isLogoLoaded = false
@@ -22,12 +22,11 @@ let isLogoLoaded = false
 catch24Logo.onload = () => {
 	isLogoLoaded = true
 	if (onLogoReadyCallback) {
-		onLogoReadyCallback() // 2. Вызываем полученную функцию, если она есть
+		onLogoReadyCallback()
 	}
 }
 catch24Logo.src = '/image/catch24-logo.svg'
 
-// 3. Создаем новую функцию, которую можно будет вызвать из другого файла
 export function setOnLogoLoadCallback(callback) {
 	onLogoReadyCallback = callback
 }
@@ -124,7 +123,6 @@ export function setupLayoutEnvironment(selector, canvasWidthArgument) {
 		console.error('Layout.js: Target element for canvas not found:', selector)
 		return
 	}
-
 	canvas = document.createElement('canvas')
 	el.innerHTML = ''
 	el.appendChild(canvas)
@@ -134,33 +132,18 @@ export function setupLayoutEnvironment(selector, canvasWidthArgument) {
 		console.error('Layout.js: Failed to get 2D context')
 		return
 	}
-
-	// --- НАЧАЛО ИЗМЕНЕНИЙ (High-DPI рендеринг) ---
-
-	// 1. Определяем желаемый ВИДИМЫЙ размер холста
 	const displayWidth = canvasWidthArgument || 720
 	const displayHeight = (displayWidth / 4) * 3
-
-	// 2. Получаем плотность пикселей экрана
 	const dpr = window.devicePixelRatio || 1
 
-	// 3. Устанавливаем РЕАЛЬНЫЙ (физический) размер холста
 	canvas.width = displayWidth * dpr
 	canvas.height = displayHeight * dpr
-
-	// 4. Устанавливаем CSS-размер, чтобы холст занимал правильное место на странице
 	canvas.style.width = `${displayWidth}px`
 	canvas.style.height = `${displayHeight}px`
 
-	// 5. Масштабируем весь контекст рисования
 	ctx.scale(dpr, dpr)
-
-	// --- КОНЕЦ ИЗМЕНЕНИЙ ---
-
-	// Улучшаем качество сглаживания
 	ctx.imageSmoothingQuality = 'high'
 
-	// ВАЖНО: Все последующие расчеты используем от видимого размера, а не от реального
 	m = Math.min(displayWidth / 4, displayHeight / 3)
 	squareSize = Math.floor(m / 3)
 	smallRadius = squareSize / 12
@@ -207,32 +190,5 @@ export function drawLayout(cubeState, args) {
 		console.log('Drawing Catch-24 logo')
 
 		ctx.drawImage(catch24Logo, 400, 420, 240, 66)
-
-		// if (drawCatch24Text) {
-		// const padding = 20
-		// const fontSize = 72
-		// ctx.textBaseline = 'alphabetic'
-		// ctx.fillStyle = '#DDDDDD'
-		// ctx.textAlign = 'left'
-		// const textParts = [
-		// 	{ text: 'Catch-', font: `${fontSize}pt "Brush Script MT", cursive` },
-		// 	{ text: '2', font: `${fontSize}pt "Academy Engraved LET", serif` },
-		// 	{ text: '4', font: `${fontSize}pt "Bodoni 72 Oldstyle", serif` },
-		// ]
-		// let totalWidth = 0
-		// const partWidths = []
-		// for (const part of textParts) {
-		// 	ctx.font = part.font
-		// 	const metrics = ctx.measureText(part.text)
-		// 	partWidths.push(metrics.width)
-		// 	totalWidth += metrics.width
-		// }
-		// let currentX = canvas.width - padding - totalWidth
-		// const yPos = m * 2 + m / 2.2 + fontSize / 2
-		// textParts.forEach((part, index) => {
-		// 	ctx.font = part.font
-		// 	ctx.fillText(part.text, currentX, yPos)
-		// 	currentX += partWidths[index]
-		// })
 	}
 }

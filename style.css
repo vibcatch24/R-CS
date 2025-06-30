@@ -1,17 +1,4 @@
 /* style.css ref 1.2 */
-@font-face {
-	font-family: "Brush Script MT Custom";
-	src: local("Brush Script MT"), local("BrushScriptMT"), cursive;
-}
-@font-face {
-	font-family: "Academy Engraved LET Custom";
-	src: local("Academy Engraved LET"), serif;
-}
-@font-face {
-	font-family: "Bodoni 72 Oldstyle Custom";
-	src: local("Bodoni 72 Oldstyle"), local("Bodoni72Oldstyle"), serif;
-}
-
 body {
 	display: flex;
 	justify-content: center;
@@ -151,7 +138,7 @@ body {
 }
 
 #catch24-input::placeholder {
-	color: #888;
+	color: #555;
 	opacity: 1;
 	font-size: 0.9em;
 	letter-spacing: normal;
