@@ -228,6 +228,7 @@ function getStickerIndexFromCoords(clickX, clickY, targetCanvasElement) {
 }
 
 function handleCanvasClick(event) {
+	readmeContainer.style.display = 'none'
 	const clickedStickerIndex = getStickerIndexFromCoords(event.clientX, event.clientY, canvasEl)
 	if (clickedStickerIndex === null) return
 	const canProceedToModify = (allStickersAreNonDefault && clickedStickerIndex < 16) || (!allStickersAreNonDefault && clickedStickerIndex < currentActiveStickerIndex)
@@ -292,7 +293,10 @@ function applyColorToSticker(colorToApply) {
 }
 
 function updatePaletteAndPotentiallyAutoApply() {
+	readmeContainer.style.display = 'none'
+
 	if (allStickersAreNonDefault) return
+
 	const validColors = cubeState.getValidColorsForSticker(currentActiveStickerIndex)
 	const allPaletteButtons = paletteContainer.querySelectorAll('button.color-button')
 	for (const button of allPaletteButtons) {
@@ -413,5 +417,4 @@ titleHeader.addEventListener('click', async () => {
 		readmeContainer.style.display = 'block'
 	}
 })
-
 initializeOrResetCubeState()

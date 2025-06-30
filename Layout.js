@@ -25,7 +25,7 @@ catch24Logo.onload = () => {
 		onLogoReadyCallback()
 	}
 }
-catch24Logo.src = '/image/catch24-logo.svg'
+catch24Logo.src = 'image/catch24-logo.svg'
 
 export function setOnLogoLoadCallback(callback) {
 	onLogoReadyCallback = callback
