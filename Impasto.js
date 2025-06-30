@@ -1,7 +1,7 @@
 // Impasto.js ref 1.2
 import * as CubeDefs from './cubeConstants.js'
 import { CubeState } from './CubeState.js'
-import { drawLayout, setupLayoutEnvironment } from './Layout.js'
+import { drawLayout, setOnLogoLoadCallback, setupLayoutEnvironment } from './Layout.js'
 
 const CANVAS_WIDTH_CONFIG = 720
 const CUBE_DIMENSION_CONFIG = 3
@@ -16,6 +16,7 @@ let copyTimeoutId = null
 
 // --- Initialization Layout (canvas) ---
 setupLayoutEnvironment('#cube-container', CANVAS_WIDTH_CONFIG)
+setOnLogoLoadCallback(updateAndRedrawAll)
 // --- Getting references to DOM elements---
 const canvasEl = document.querySelector('#cube-container canvas')
 const paletteContainer = document.getElementById('color-palette')

@@ -1,6 +1,6 @@
 # dependencies (bun install)
 node_modules
-
+biome.json
 # output
 out
 dist

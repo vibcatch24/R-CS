@@ -150,6 +150,13 @@ body {
 	text-align: center;
 }
 
+#catch24-input::placeholder {
+	color: #888;
+	opacity: 1;
+	font-size: 0.9em;
+	letter-spacing: normal;
+}
+
 #catch24-button,
 #apply-catch24-button {
 	width: 80px;
@@ -248,6 +255,7 @@ h1.title-header {
 	left: 10px;
 	z-index: 10;
 	margin: 0;
+	font-family: "Times New Roman", Times, serif;
 	font-size: 18px;
 	color: #ccc;
 	cursor: pointer;

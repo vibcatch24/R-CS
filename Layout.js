@@ -14,6 +14,24 @@ let middleRadius
 let largeRadius
 let dimensionsInitialized = false
 
+let onLogoReadyCallback = null // 1. Переменная для хранения функции
+
+const catch24Logo = new Image()
+let isLogoLoaded = false
+
+catch24Logo.onload = () => {
+	isLogoLoaded = true
+	if (onLogoReadyCallback) {
+		onLogoReadyCallback() // 2. Вызываем полученную функцию, если она есть
+	}
+}
+catch24Logo.src = '/image/catch24-logo.svg'
+
+// 3. Создаем новую функцию, которую можно будет вызвать из другого файла
+export function setOnLogoLoadCallback(callback) {
+	onLogoReadyCallback = callback
+}
+
 function getStickerGeometry(stickerIndex) {
 	if (!dimensionsInitialized) {
 		console.error('Layout.js: getStickerGeometry called before dimensions were initialized.')
@@ -116,12 +134,34 @@ export function setupLayoutEnvironment(selector, canvasWidthArgument) {
 		console.error('Layout.js: Failed to get 2D context')
 		return
 	}
-	const currentCanvasWidth = canvasWidthArgument || 720
-	const m_forHeightCalc = currentCanvasWidth / 4
-	canvas.width = currentCanvasWidth
-	canvas.height = m_forHeightCalc * 3
 
-	m = Math.min(canvas.width / 4, canvas.height / 3)
+	// --- НАЧАЛО ИЗМЕНЕНИЙ (High-DPI рендеринг) ---
+
+	// 1. Определяем желаемый ВИДИМЫЙ размер холста
+	const displayWidth = canvasWidthArgument || 720
+	const displayHeight = (displayWidth / 4) * 3
+
+	// 2. Получаем плотность пикселей экрана
+	const dpr = window.devicePixelRatio || 1
+
+	// 3. Устанавливаем РЕАЛЬНЫЙ (физический) размер холста
+	canvas.width = displayWidth * dpr
+	canvas.height = displayHeight * dpr
+
+	// 4. Устанавливаем CSS-размер, чтобы холст занимал правильное место на странице
+	canvas.style.width = `${displayWidth}px`
+	canvas.style.height = `${displayHeight}px`
+
+	// 5. Масштабируем весь контекст рисования
+	ctx.scale(dpr, dpr)
+
+	// --- КОНЕЦ ИЗМЕНЕНИЙ ---
+
+	// Улучшаем качество сглаживания
+	ctx.imageSmoothingQuality = 'high'
+
+	// ВАЖНО: Все последующие расчеты используем от видимого размера, а не от реального
+	m = Math.min(displayWidth / 4, displayHeight / 3)
 	squareSize = Math.floor(m / 3)
 	smallRadius = squareSize / 12
 	middleRadius = smallRadius * 1.25
@@ -163,37 +203,36 @@ export function drawLayout(cubeState, args) {
 		)
 	}
 	// --- FACSIMILE CATCH-24 ---
-	if (drawCatch24Text) {
-		const padding = 20
-		const fontSize = 72
+	if (drawCatch24Text && isLogoLoaded) {
+		console.log('Drawing Catch-24 logo')
 
-		ctx.textBaseline = 'alphabetic'
-		ctx.fillStyle = '#DDDDDD'
-		ctx.textAlign = 'left'
+		ctx.drawImage(catch24Logo, 400, 420, 240, 66)
 
-		const textParts = [
-			{ text: 'Catch-', font: `${fontSize}pt "Brush Script MT", cursive` },
-			{ text: '2', font: `${fontSize}pt "Academy Engraved LET", serif` },
-			{ text: '4', font: `${fontSize}pt "Bodoni 72 Oldstyle", serif` },
-		]
-
-		let totalWidth = 0
-		const partWidths = []
-
-		for (const part of textParts) {
-			ctx.font = part.font
-			const metrics = ctx.measureText(part.text)
-			partWidths.push(metrics.width)
-			totalWidth += metrics.width
-		}
-
-		let currentX = canvas.width - padding - totalWidth
-		const yPos = m * 2 + m / 2.2 + fontSize / 2
-
-		textParts.forEach((part, index) => {
-			ctx.font = part.font
-			ctx.fillText(part.text, currentX, yPos)
-			currentX += partWidths[index]
-		})
+		// if (drawCatch24Text) {
+		// const padding = 20
+		// const fontSize = 72
+		// ctx.textBaseline = 'alphabetic'
+		// ctx.fillStyle = '#DDDDDD'
+		// ctx.textAlign = 'left'
+		// const textParts = [
+		// 	{ text: 'Catch-', font: `${fontSize}pt "Brush Script MT", cursive` },
+		// 	{ text: '2', font: `${fontSize}pt "Academy Engraved LET", serif` },
+		// 	{ text: '4', font: `${fontSize}pt "Bodoni 72 Oldstyle", serif` },
+		// ]
+		// let totalWidth = 0
+		// const partWidths = []
+		// for (const part of textParts) {
+		// 	ctx.font = part.font
+		// 	const metrics = ctx.measureText(part.text)
+		// 	partWidths.push(metrics.width)
+		// 	totalWidth += metrics.width
+		// }
+		// let currentX = canvas.width - padding - totalWidth
+		// const yPos = m * 2 + m / 2.2 + fontSize / 2
+		// textParts.forEach((part, index) => {
+		// 	ctx.font = part.font
+		// 	ctx.fillText(part.text, currentX, yPos)
+		// 	currentX += partWidths[index]
+		// })
 	}
 }
