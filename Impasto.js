@@ -200,27 +200,28 @@ function updateControlsVisibility() {
 	}
 }
 
-function getStickerIndexFromCoords(clickX, clickY, targetCanvasElement) {
-	if (!targetCanvasElement || SQUARE_SIZE_FOR_CLICK_DETECTION <= 0) return null
-	const rect = targetCanvasElement.getBoundingClientRect()
-	const scaleX = targetCanvasElement.width / rect.width
-	const scaleY = targetCanvasElement.height / rect.height
-	const canvasClickX = (clickX - rect.left) * scaleX
-	const canvasClickY = (clickY - rect.top) * scaleY
+function getStickerIndexFromCoords(offsetX, offsetY) {
+	const canvasClickX = offsetX
+	const canvasClickY = offsetY
 	const faceLayoutCoords = CubeDefs.FACE_LAYOUT
 
 	for (let faceOrderIndex = 0; faceOrderIndex < faceLayoutCoords.length; faceOrderIndex++) {
 		const [faceGridX, faceGridY] = faceLayoutCoords[faceOrderIndex]
 		const faceCanvasX = faceGridX * M_FOR_CLICK_DETECTION
 		const faceCanvasY = faceGridY * M_FOR_CLICK_DETECTION
+
 		if (canvasClickX >= faceCanvasX && canvasClickX < faceCanvasX + M_FOR_CLICK_DETECTION && canvasClickY >= faceCanvasY && canvasClickY < faceCanvasY + M_FOR_CLICK_DETECTION) {
 			const relativeX = canvasClickX - faceCanvasX
 			const relativeY = canvasClickY - faceCanvasY
 			const col = Math.floor(relativeX / SQUARE_SIZE_FOR_CLICK_DETECTION)
 			const row = Math.floor(relativeY / SQUARE_SIZE_FOR_CLICK_DETECTION)
+
 			if (row === 1 && col === 1) return null // Centers
+
 			const localOrderOnFace = CubeDefs.NON_CENTER_FACE.findIndex((p) => p.row === row && p.col === col)
-			if (localOrderOnFace !== -1) return faceOrderIndex * 8 + localOrderOnFace
+			if (localOrderOnFace !== -1) {
+				return faceOrderIndex * 8 + localOrderOnFace
+			}
 			return null
 		}
 	}
@@ -229,11 +230,15 @@ function getStickerIndexFromCoords(clickX, clickY, targetCanvasElement) {
 
 function handleCanvasClick(event) {
 	readmeContainer.style.display = 'none'
-	const clickedStickerIndex = getStickerIndexFromCoords(event.clientX, event.clientY, canvasEl)
-	if (clickedStickerIndex === null) return
-	const canProceedToModify = (allStickersAreNonDefault && clickedStickerIndex < 16) || (!allStickersAreNonDefault && clickedStickerIndex < currentActiveStickerIndex)
-	if (!canProceedToModify) return
+	const clickedStickerIndex = getStickerIndexFromCoords(event.offsetX, event.offsetY)
 
+	if (clickedStickerIndex === null) {
+		return
+	}
+	const canProceedToModify = (allStickersAreNonDefault && clickedStickerIndex < 16) || (!allStickersAreNonDefault && clickedStickerIndex < currentActiveStickerIndex)
+	if (!canProceedToModify) {
+		return
+	}
 	const wasSolved = allStickersAreNonDefault
 	if (!wasSolved && cubeState.getStickerColor(clickedStickerIndex) === CubeDefs.DEFAULT_COLOR) {
 		currentActiveStickerIndex = clickedStickerIndex
@@ -417,4 +422,5 @@ titleHeader.addEventListener('click', async () => {
 		readmeContainer.style.display = 'block'
 	}
 })
+
 initializeOrResetCubeState()
