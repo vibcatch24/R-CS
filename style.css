@@ -9,9 +9,9 @@ body {
 }
 
 .tool-container {
-	position: relative; /* ВАЖНО: Точка отсчёта для абсолютного позиционирования */
+	position: relative;
 	width: 600px;
-	margin: 0 auto 20px auto; /* Центрирование на странице */
+	margin: 0 auto 20px auto;
 	min-height: 550px;
 }
 
