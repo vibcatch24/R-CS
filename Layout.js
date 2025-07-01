@@ -185,10 +185,10 @@ export function drawLayout(cubeState, args) {
 			isActive,
 		)
 	}
-	// --- FACSIMILE CATCH-24 ---
+	// --- LOGO CATCH-24 ---
 	if (drawCatch24Text && isLogoLoaded) {
 		console.log('Drawing Catch-24 logo')
 
-		ctx.drawImage(catch24Logo, 400, 420, 240, 66)
+		ctx.drawImage(catch24Logo, 340, 380, 240, 66)
 	}
 }

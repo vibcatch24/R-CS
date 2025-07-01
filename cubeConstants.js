@@ -1,5 +1,6 @@
 // Файл: cubeConstants.js ref 1.2
 export const DEBUG_STATE = false
+export const CANVAS_WIDTH_CONFIG = 600
 export const TOTAL_STIKERS = 48
 export const DEFAULT_COLOR = '#C0C0C0'
 export const SIDES = ['U', 'L', 'F', 'R', 'B', 'D']

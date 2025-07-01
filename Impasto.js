@@ -3,9 +3,8 @@ import * as CubeDefs from './cubeConstants.js'
 import { CubeState } from './CubeState.js'
 import { drawLayout, setOnLogoLoadCallback, setupLayoutEnvironment } from './Layout.js'
 
-const CANVAS_WIDTH_CONFIG = 720
 const CUBE_DIMENSION_CONFIG = 3
-const M_FOR_CLICK_DETECTION = CANVAS_WIDTH_CONFIG / 4
+const M_FOR_CLICK_DETECTION = CubeDefs.CANVAS_WIDTH_CONFIG / 4
 const SQUARE_SIZE_FOR_CLICK_DETECTION = Math.floor(M_FOR_CLICK_DETECTION / CUBE_DIMENSION_CONFIG)
 
 let cubeState = new CubeState()
@@ -15,7 +14,7 @@ let shouldDrawCatch24Text = false
 let copyTimeoutId = null
 
 // --- Initialization Layout (canvas) ---
-setupLayoutEnvironment('#cube-container', CANVAS_WIDTH_CONFIG)
+setupLayoutEnvironment('#cube-container', CubeDefs.CANVAS_WIDTH_CONFIG)
 setOnLogoLoadCallback(updateAndRedrawAll)
 // --- Getting references to DOM elements---
 const canvasEl = document.querySelector('#cube-container canvas')
@@ -33,7 +32,7 @@ function initializeOrResetCubeState() {
 	positionCodeInput.style.color = ''
 	positionCodeInput.value = ''
 	positionCodeInput.style.fontFamily = '"Times New Roman", ""Times", serif'
-	positionCodeInput.style.fontSize = '1em'
+	positionCodeInput.style.fontSize = '0.9em'
 
 	applyInputButton.style.background = 'linear-gradient(to right, #8A2BE2 25px, dodgerblue 40px)'
 
@@ -96,7 +95,7 @@ function handleApplyCode(isSolution) {
 				applyInputButton.style.background = 'dodgerblue'
 				positionCodeInput.value = codeInput.split('').join(' ')
 				positionCodeInput.style.fontFamily = '"Menlo", "Consolas", monospace'
-				positionCodeInput.style.fontSize = '1.1em'
+				positionCodeInput.style.fontSize = '1em'
 				positionCodeInput.style.color = 'lime'
 				updateAndRedrawAll()
 			} else {
@@ -118,7 +117,7 @@ function handleCatch24Copy() {
 			.then(() => {
 				positionCodeInput.value = codeToCopy
 				positionCodeInput.style.fontFamily = '"Menlo", "Consolas", monospace'
-				positionCodeInput.style.fontSize = '1.1em'
+				positionCodeInput.style.fontSize = '1em'
 				positionCodeInput.style.color = 'dodgerblue'
 
 				applyInputButton.style.background = 'linear-gradient(to right, #8A2BE2 25px, dodgerblue 40px)'
