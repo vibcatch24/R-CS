@@ -6,12 +6,12 @@ body {
 	color: #f0f0f0;
 	font-family: sans-serif;
 	padding: 20px 10px;
-	min-width: 740px;
+	min-width: 600px;
 }
 
 .tool-container {
 	position: relative;
-	width: 720px;
+	width: 600px;
 	margin: 0 auto 20px auto;
 	min-height: 550px;
 }
@@ -20,10 +20,7 @@ body {
 	position: absolute;
 	top: 10px;
 	right: 0;
-	width: 340px;
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-start;
+	width: 280px; /* Занимает всю ширину родителя */
 }
 
 #left-controls {
@@ -78,7 +75,7 @@ body {
 	padding: 6px 8px;
 	background-color: #444;
 	color: #ccc;
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: normal;
 	line-height: 1;
 	text-align: center;
@@ -100,8 +97,11 @@ body {
 }
 /* Reset */
 #controls button#reset-button {
+	position: absolute;
+	top: 0;
+	right: 0;
 	padding: 8px 15px;
-	font-size: 1.2em;
+	font-size: 0.9em;
 	cursor: pointer;
 	border: 1px solid #555;
 	border-radius: 15px;
@@ -109,7 +109,6 @@ body {
 	color: #bbb;
 	transition: background-color 0.2s, border-color 0.2s;
 	height: min-content;
-	margin-left: auto;
 }
 #controls button#reset-button:hover {
 	background-color: #444;
@@ -117,7 +116,7 @@ body {
 }
 
 .code-field {
-	width: 440px;
+	width: 400px;
 	padding: 5px 8px;
 	background-color: #222;
 	color: #f0f0f0;
@@ -128,13 +127,13 @@ body {
 
 #position-code {
 	font-family: "Menlo", "Consolas", monospace;
-	font-size: 1.1em;
+	font-size: 1em;
 	text-align: center;
 }
 
 #catch24-input {
 	font-family: "Times New Roman", Times, serif;
-	font-size: 1em;
+	font-size: 0.9em;
 	text-align: center;
 }
 
@@ -147,12 +146,12 @@ body {
 
 #catch24-button,
 #apply-catch24-button {
-	width: 80px;
+	width: 75px;
 	padding: 7px 10px;
 	border-radius: 15px;
 	border: 1px solid #555;
 	cursor: pointer;
-	font-size: 1.1em;
+	font-size: 1em;
 }
 
 #catch24-button {
@@ -226,7 +225,7 @@ body {
 /* "Input" */
 .hotzone-text {
 	padding: 8px 6px;
-	font-size: 18px;
+	font-size: 16px;
 }
 
 #diagnostic-message {
@@ -244,7 +243,7 @@ h1.title-header {
 	z-index: 10;
 	margin: 0;
 	font-family: "Times New Roman", Times, serif;
-	font-size: 18px;
+	font-size: 16px;
 	color: #ccc;
 	cursor: pointer;
 }
@@ -275,7 +274,10 @@ h1.title-header:hover {
 	color: #00aaff;
 }
 
-#controls button#reset-button:active,
+#controls button#reset-button:active {
+	margin-left: auto;
+}
+
 #catch24-button:not(:disabled):active,
 .hotzone-button:active,
 #apply-catch24-button:active,
