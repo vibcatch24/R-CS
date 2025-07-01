@@ -3,8 +3,10 @@ import * as CubeDefs from './cubeConstants.js'
 import { CubeState } from './CubeState.js'
 import { drawLayout, setOnLogoLoadCallback, setupLayoutEnvironment } from './Layout.js'
 
+const isMobile = window.innerWidth < 600
+const CANVAS_WIDTH_CONFIG = isMobile ? window.innerWidth - 40 : 600
 const CUBE_DIMENSION_CONFIG = 3
-const M_FOR_CLICK_DETECTION = CubeDefs.CANVAS_WIDTH_CONFIG / 4
+const M_FOR_CLICK_DETECTION = CANVAS_WIDTH_CONFIG / 4
 const SQUARE_SIZE_FOR_CLICK_DETECTION = Math.floor(M_FOR_CLICK_DETECTION / CUBE_DIMENSION_CONFIG)
 
 let cubeState = new CubeState()
@@ -14,7 +16,7 @@ let shouldDrawCatch24Text = false
 let copyTimeoutId = null
 
 // --- Initialization Layout (canvas) ---
-setupLayoutEnvironment('#cube-container', CubeDefs.CANVAS_WIDTH_CONFIG)
+setupLayoutEnvironment('#cube-container', CANVAS_WIDTH_CONFIG)
 setOnLogoLoadCallback(updateAndRedrawAll)
 // --- Getting references to DOM elements---
 const canvasEl = document.querySelector('#cube-container canvas')
