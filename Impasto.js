@@ -239,6 +239,7 @@ function handleCanvasClick(event) {
 	if (!canProceedToModify) {
 		return
 	}
+	cubeState.justErased = true
 	const wasSolved = allStickersAreNonDefault
 	if (!wasSolved && cubeState.getStickerColor(clickedStickerIndex) === CubeDefs.DEFAULT_COLOR) {
 		currentActiveStickerIndex = clickedStickerIndex
@@ -258,6 +259,7 @@ function handleCanvasClick(event) {
 
 function handleBackspaceButtonClick() {
 	if (currentActiveStickerIndex > 0) {
+		cubeState.justErased = true
 		clearDiagnosticMessage()
 		currentActiveStickerIndex--
 		allStickersAreNonDefault = false

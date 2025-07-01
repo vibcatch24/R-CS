@@ -139,3 +139,7 @@ Standard face notations:
 ![Scramble/Solution](image/tests/test%203.jpeg)
 
 ![Catch-24 Encoding (multiplication table)](image/image%205.jpeg)
+
+### The R'CS program and the Catch-24 code are unlicensed:
+
+[Unlicense](UNLICENSE.txt)

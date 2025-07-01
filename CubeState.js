@@ -9,6 +9,7 @@ export class CubeState {
 		this.definitionAssignments = {} // { 'corner_0': physicalSlotId, 'edge_3': physicalSlotId, ... }
 		this.faceColors = CubeDefs.FACE_COLORS
 		this.stickerIndex = null
+		this.justErased = false
 	}
 
 	getStickerColor(stickerIndex) {
