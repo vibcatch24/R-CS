@@ -11,7 +11,8 @@ body {
 
 .tool-container {
 	position: relative;
-	width: 600px;
+	width: 100%;
+	max-width: 600px;
 	margin: 0 auto 20px auto;
 	min-height: 550px;
 }
@@ -285,4 +286,39 @@ h1.title-header:hover {
 #controls button#backspace-button:active {
 	box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.4);
 	transform: translateY(1px);
+}
+
+@media (max-width: 600px) {
+	body {
+		flex-direction: column;
+		padding: 10px;
+	}
+
+	#controls {
+		position: static;
+		width: 100%;
+		order: 2;
+		margin-top: 20px;
+		justify-content: center;
+		gap: 20px;
+	}
+
+	#cube-container {
+		order: 1;
+	}
+
+	h1.title-header {
+		position: static;
+		text-align: center;
+		margin-bottom: 20px;
+	}
+
+	#position-code-container {
+		order: 3;
+	}
+
+	.code-field {
+		width: 100%;
+		box-sizing: border-box;
+	}
 }
