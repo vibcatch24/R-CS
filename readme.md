@@ -142,4 +142,6 @@ Standard face notations:
 
 ### The R'CS program and the Catch-24 code are unlicensed:
 
+* [R-CS](https://github.com/vibcatch24/R-CS)
+
 [Unlicense](UNLICENSE.txt)
