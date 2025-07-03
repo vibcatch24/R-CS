@@ -74,6 +74,7 @@ function handleApplyCode(isSolution) {
 		if (result.success) {
 			positionCodeInput.value = normalizedSequence
 			positionCodeInput.style.fontFamily = '"Times New Roman", "Times", serif'
+			positionCodeInput.style.fontSize = '0.9em'
 			positionCodeInput.style.color = 'lime'
 			if (isSolution) {
 				positionCodeInput.value = `${normalizedSequence} ↩`
