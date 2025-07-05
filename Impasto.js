@@ -13,6 +13,7 @@ let currentActiveStickerIndex = 0
 let allStickersAreNonDefault = false
 let shouldDrawCatch24Text = false
 let copyTimeoutId = null
+let preloadedReadmeContent = null
 
 // --- Initialization Layout (canvas) ---
 setupLayoutEnvironment('#cube-container', CANVAS_WIDTH_CONFIG)
@@ -351,6 +352,20 @@ function setDiagnosticMessage(message) {
 function clearDiagnosticMessage() {
 	if (diagnosticMessage) diagnosticMessage.textContent = ''
 }
+
+async function preloadReadme() {
+	try {
+		const response = await fetch('./readme.html')
+		if (!response.ok) {
+			throw new Error('Failed to fetch readme.html')
+		}
+		preloadedReadmeContent = await response.text()
+	} catch (error) {
+		console.error('Error preloading readme:', error)
+		preloadedReadmeContent = '<p>Failed to load file content.</p>'
+	}
+}
+
 // --- DYNAMIC UI CREATION ---
 const eraserButton = document.createElement('button')
 eraserButton.id = 'backspace-button'
@@ -400,30 +415,19 @@ positionCodeInput.addEventListener('paste', (event) => {
 	input.value = input.value.substring(0, input.selectionStart) + pastedText + input.value.substring(input.selectionEnd)
 })
 
-titleHeader.addEventListener('click', async () => {
+titleHeader.addEventListener('click', () => {
 	if (readmeContainer.style.display === 'block') {
 		readmeContainer.style.display = 'none'
 		return
 	}
-	if (readmeContainer.innerHTML.trim() !== '') {
+	if (preloadedReadmeContent) {
+		readmeContainer.innerHTML = preloadedReadmeContent
 		readmeContainer.style.display = 'block'
-		return
-	}
-	try {
-		const response = await fetch('./readme.html')
-
-		if (!response.ok) {
-			throw new Error('Failed to load readme.html')
-		}
-		const htmlContent = await response.text()
-
-		readmeContainer.innerHTML = htmlContent
-		readmeContainer.style.display = 'block'
-	} catch (error) {
-		console.error('Error:', error)
-		readmeContainer.innerHTML = 'Failed to load file content.'
+	} else {
+		readmeContainer.innerHTML = 'Content is loading...'
 		readmeContainer.style.display = 'block'
 	}
 })
 
 initializeOrResetCubeState()
+preloadReadme()
