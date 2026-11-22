@@ -1,4 +1,5 @@
 // Impasto.js ref 1.3
+import './SymmetryAnalyzer.js'
 import * as CubeDefs from './cubeConstants.js'
 import { CubeState } from './CubeState.js'
 import { drawLayout, setupLayoutEnvironment } from './Layout.js'
