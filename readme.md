@@ -100,46 +100,75 @@ Standard face notations:
 * A preliminary code is displayed immediately (as in `image 4`), acting as a progress bar until the entire cube is colored. Unassigned slot definition symbols are replaced with hyphens.
 
     ![Preliminary Catch-24 encoding](image/image%204.jpeg)
-* To obtain the final code value, upon full coloring of the cube, the preliminary values are character-wise multiplied according to the multiplication table (`image 5`) by the value inverse to the initial position. The result of this multiplication is the Catch-24 code.
+    
+* To obtain the final code value, upon full coloring of the cube, the preliminary values are character-wise multiplied according to the multiplication table ([image 5](#image-5)) by the value inverse to the initial position. The result of this multiplication is the Catch-24 code.
 * Examples of character-wise multiplication from the table (`image 5`): a • x = x, m • f = e, f • i = a. Multiplication is generally not commutative (the result depends on the order of the factors).
 * The Catch-24 code is displayed in blue in the **output string** to the right of the Copy button.
 * The 18-character Catch-24 code is a digital fingerprint - a signature of any legitimate position of the Rubik's Cube.
 
 ## Additional Input Modes
 
-### Catch-24 Code Input Mode
-
-* After the full 18-character code is formed, it becomes possible to copy the Catch-24 code to the clipboard with the "Copy" button.
-* Simultaneously with pressing the Copy button, the Catch-24 code is placed in the **input string** to the right of the Input button, confirming the copy.
-* After entering the Catch-24 code into the input string (by any method), pressing the Input button performs the reverse operation of decoding the Catch-24 code into the colors of the cube position.
-* On success, the text in the input field turns bright green (lime), and the Input button becomes fully blue.
-
-![Catch-24 encoding](image/tests/test%201.jpeg)
-* If the position does not correspond to the mechanics of the Rubik's Cube, a corresponding warning is issued.
-
 ### Supported Notation for the Input String
 
 * Standard WCA: Uppercase letters F, B, R, L, U, D with modifiers ' (counter-clockwise), 2 (double move), and wide moves, e.g., Fw, Rw', Uw2.
-* For backward compatibility with some scramble tables, two non-standard modifier notations are supported: 1 and 3, e.g., F3 (as F') and U1 (as U).
+* For backward compatibility with some scramble tables, non-standard modifiers such as `1`, `3`, `+`, and `-` are also supported, e.g., `F3` or `F-` (as `F'`), `U1` or `U+` (as `U`).
 * Rotations of the entire cube (x, y, z) are not supported - for R'CS, the starting WCA net is unchangeable.
+
 
 ### Input Modes: Scramble and Solution
 
-* These modes allow entering standard move sequences into the input string and processing them as a Scramble (forward sequence) or as a Solution (inverse sequence). This provides the ability not only to get the Scramble position but also the position in Solution mode from which a known algorithm begins.
+* These modes allow entering standard move sequences into the input string and processing them as a Scramble (forward sequence) or as a Solution (inverse sequence).
+
+![Scramble/Solution](image/tests/Scramble.jpeg)
+![Scramble/Solution](image/tests/Solution.jpeg)
+
+* This provides the ability not only to get the Scramble position but also the position in Solution mode from which a known algorithm begins.
 * A single "Input" button with two active zones is used to control the modes:
-  1. The blue, main, and right part of the button with the text "Input": Scramble, [Copy] Catch-24 modes. Processes the forward sequence of moves starting from the identity position (solved cube).
-  2. The purple zone on the left, with the turn-around icon ↩ : (Solution Mode). In Solution mode, the sequence in the input string will be the solution to the position obtained after pressing the ↩ icon on the left part of the Input button.
-
-![WCA-encoding](image/tests/test%202.jpeg)
+  1. The light blue, main, and right part of the button with the text "Input": Scramble & Catch-24 modes. (In Scramble and Solution modes, the sequence of moves is executed starting from the initial (solved) state of the cube.)
+  2. The purple zone on the left, with the turn-around icon ↩ : (Solution Mode). In Solution mode, the inverse sequence in the input string will be the solution to the position obtained after pressing the ↩ icon on the left part of the Input button.
 * Upon successful execution (in both modes), the text in the input field will turn bright green (lime).
-* If a Solution sequence was processed, the "Input" button will turn fully purple, and a `↩` symbol will appear at the end of the string in the input field as an additional indicator. The purple color of the button will remain until the next action (Scramble, Reset, or Copy mode).
-* In Scramble mode, the "Input" button will adopt a two-zoned purple-blue color.
-* A Scramble position can simultaneously be a Solution. In that case, the Catch-24 code will not change when switching to Solution mode for the same sequence in the input string.
+* If the entered string was processed in Solution mode, the "Input" button will turn fully purple, a ↩ symbol will appear at the end of the string in the input field, and the corresponding values will be displayed in the Symmetry: & Metrics: (Metrics - when a move sequence is entered) indicators. The purple color of the button will remain until the next action (Input, Reset, or Copy mode).
 
-![Scramble/Solution](image/tests/test%203.jpeg)
+### Catch-24 Code Input Mode
 
-![Catch-24 Encoding (multiplication table)](image/image%205.jpeg)
+* When an 18-character Catch-24 code is entered directly into the input field (to the right of the dual-zone **↩ / Input** button), pressing any part of this button performs the reverse operation of decoding the Catch-24 code into the cube's sticker colors.
+* On success, the text in the input field turns bright green (lime), and the **Input** button becomes fully light blue.
+
+![Catch-24 encoding](image/tests/Copy_input.jpeg)
+
+* Once the full 18-character Catch-24 code is formed in the output field (to the right of the **Copy** button), as well as when the user finishes coloring the net manually, it becomes possible to copy the Catch-24 code to the clipboard using the **Copy** button.
+* Simultaneously with pressing the **Copy** button, the Catch-24 code is placed into the input field to the right of the **Input** button, confirming the copy.
+
+![Catch-24 encoding](image/tests/Copy.jpeg)
+
+* If the position does not correspond to the mechanics of the Rubik's Cube, a corresponding warning is issued.
+
+## Symmetry Analyzer, Metrics, and Batch Processing
+
+The third control row contains tools for crystallographic classification, move sequence metrics, and batch processing of datasets:
+
+### Schoenflies Symmetry & Reversibility (`Symmetry:`)
+* Automatically classifies any legitimate cube state into one of the 31 achievable Schoenflies point symmetry groups (according to Herbert Kociemba's table kociemba.org/symmetric2.htm, from the asymmetric group C1 to the full octahedral group Oh).
+* Displays an additional indicator `Inv` when applicable:
+  * `↩` — **Direct Reversibility / Involution:** the inverse state has the identical Catch-24 signature (`S(P) = S(P⁻¹)`).
+  * `⇄` — **Mirror Anti-Involution (Antisymmetry):** the inverse sequence produces a mirror-reflected twin of the original pattern (`M · P · M⁻¹ = P⁻¹`).
+
+### Move Sequence Metrics (`Metrics:`)
+* When a move sequence is entered, the right indicator displays its length in three metrics formatted as `(xxt, xxq, xxf)`:
+  * `t` — **TRM (Turn Robot Metric):** quarter-turns where simultaneous moves on the same axis (e.g., `R L`, `U D'`) count as 1 unit, and double turns (`R2`, `R L2`) count as 2 units.
+  * `q` — **QTM (Quarter-Turn Metric):** total number of 90° face turns (double moves count as 2).
+  * `f` — **HTM (Half-Turn Metric / Face-Turn Metric):** total number of face moves (90° or 180° moves each count as 1).
+* Pressing the **Reset** button clears both the `Symmetry:` and `Metrics:` indicators.
+
+### Batch Mode (`Batch`)
+* Clicking the **Batch** button allows loading a text or tab-separated file (`.txt`, `.tsv`, `.csv`) containing a list of move sequences or 18-character Catch-24 signatures.
+* R'CS automatically normalizes move sequences, deduplicates identical signatures and generates a downloadable **`rcs_signatures_output.tsv`** report with 7 columns:
+  `Scramble`, `Catch-24 Signature`, `Symmetry`, `Inv`, `t`, `q`, `f`.
+
+  ![Batch Mode](image/tests/ex1.jpeg)
 
 ### The R'CS program and the Catch-24 code are unlicensed:
 
 [Unlicense](UNLICENSE.txt)
+
+<a id="image 5"></a>![Catch-24 Encoding (multiplication table)](image/image%205.jpeg)

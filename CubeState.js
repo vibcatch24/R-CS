@@ -1,4 +1,5 @@
 // CubeState.js ref 1.2
+import console from 'node:console'
 import * as CubeDefs from './cubeConstants.js'
 
 const DEBUG = CubeDefs.DEBUG_STATE
@@ -90,7 +91,7 @@ export class CubeState {
 
 			let isAvailable = true
 			const candDefKey = `corner_${candDef.id}`
-			if (Object.prototype.hasOwnProperty.call(this.definitionAssignments, candDefKey) && this.definitionAssignments[candDefKey] !== physicalSlotID) {
+			if (Object.hasOwn(this.definitionAssignments, candDefKey) && this.definitionAssignments[candDefKey] !== physicalSlotID) {
 				isAvailable = false
 			}
 
@@ -228,7 +229,7 @@ export class CubeState {
 				}
 
 				const canonicalKey = `edge_${identifiedEdgeId}`
-				if (Object.prototype.hasOwnProperty.call(this.definitionAssignments, canonicalKey) && this.definitionAssignments[canonicalKey] !== pieceInfo.id) {
+				if (Object.hasOwn(this.definitionAssignments, canonicalKey) && this.definitionAssignments[canonicalKey] !== pieceInfo.id) {
 					return false
 				}
 				return true
@@ -387,7 +388,7 @@ export class CubeState {
 			let assignedCount = 0
 
 			for (const pieceDefKey in this.definitionAssignments) {
-				if (Object.prototype.hasOwnProperty.call(this.definitionAssignments, pieceDefKey)) {
+				if (Object.hasOwn(this.definitionAssignments, pieceDefKey)) {
 					if (pieceDefKey.startsWith(`${pieceType}_`)) {
 						assignedCount++
 					}
@@ -419,7 +420,7 @@ export class CubeState {
 					let isAssignedToCorrectDefinitionType = false
 
 					for (const definitionKey in this.definitionAssignments) {
-						if (Object.prototype.hasOwnProperty.call(this.definitionAssignments, definitionKey)) {
+						if (Object.hasOwn(this.definitionAssignments, definitionKey)) {
 							if (this.definitionAssignments[definitionKey] === physSlotID) {
 								if (definitionKey.startsWith(`${pieceType}_`)) {
 									isAssignedToCorrectDefinitionType = true
@@ -613,6 +614,7 @@ export class CubeState {
 		this.cornerOrientation = Array(8).fill(0)
 		this.edgePermutation = Array.from({ length: 12 }, (_, i) => i)
 		this.edgeOrientation = Array(12).fill(0)
+		this.lastParsedSequence = sequenceToApply
 
 		for (const move of sequenceToApply) {
 			this._applySingleMove(move.face, move.turns)
@@ -786,10 +788,6 @@ export class CubeState {
 					const thirdDeducedColor = winningDefCanonColors.find((c) => !knownColorsArr.includes(c))
 
 					if (thirdDeducedColor) {
-						let countForThirdColor = 0
-						for (let i = 0; i < this.stickersColor.length; i++) {
-							if (this.stickersColor[i] === thirdDeducedColor) countForThirdColor++
-						}
 						this.setStickerColor(uncoloredSticker.stickerIndex, thirdDeducedColor)
 						colorChanged = true
 					}
@@ -908,7 +906,9 @@ export class CubeState {
 			codeIndex++
 		}
 		const preliminaryCode = resultCodeChars.join('')
-
+		// modify
+		this.lastPreliminaryCode = preliminaryCode
+		// end modify
 		if (preliminaryCode.includes(PLACEHOLDER_CHAR) || preliminaryCode.includes('?')) {
 			return preliminaryCode
 		}
@@ -938,7 +938,7 @@ export class CubeState {
 			if (candDefCanonicalColors.includes(color1_onSlot) && candDefCanonicalColors.includes(color2_onSlot)) {
 				const candDefKey = `edge_${candDef.id}`
 				let isCandDefAvailable = true
-				if (Object.prototype.hasOwnProperty.call(this.definitionAssignments, candDefKey) && this.definitionAssignments[candDefKey] !== physicalSlotID) {
+				if (Object.hasOwn(this.definitionAssignments, candDefKey) && this.definitionAssignments[candDefKey] !== physicalSlotID) {
 					isCandDefAvailable = false
 				}
 				if (isCandDefAvailable) {
@@ -974,7 +974,7 @@ export class CubeState {
 			if (candDefCanonicalColors.includes(color1_onSlot) && candDefCanonicalColors.includes(color2_onSlot)) {
 				const candDefKey = `edge_${candDef.id}`
 				let isCandDefAvailable = true
-				if (Object.prototype.hasOwnProperty.call(this.definitionAssignments, candDefKey) && this.definitionAssignments[candDefKey] !== physicalSlotID) {
+				if (Object.hasOwn(this.definitionAssignments, candDefKey) && this.definitionAssignments[candDefKey] !== physicalSlotID) {
 					isCandDefAvailable = false
 				}
 				if (isCandDefAvailable) {

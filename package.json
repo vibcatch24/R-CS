@@ -8,6 +8,7 @@
 		"deploy": "bun run build && cp index.html style.css readme.html dist/ && cp -r image dist/ && gh-pages -d dist"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "2.0.0",
 		"@types/bun": "latest",
 		"gh-pages": "^6.3.0"
 	},

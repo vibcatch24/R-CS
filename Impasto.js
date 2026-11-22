@@ -1,14 +1,15 @@
-// Impasto.js ref 1.2
+// Impasto.js ref 1.3
 import * as CubeDefs from './cubeConstants.js'
 import { CubeState } from './CubeState.js'
-import { drawLayout, setOnLogoLoadCallback, setupLayoutEnvironment } from './Layout.js'
+import { drawLayout, setupLayoutEnvironment } from './Layout.js'
 
 const CANVAS_WIDTH_CONFIG = 600
 const CUBE_DIMENSION_CONFIG = 3
 const M_FOR_CLICK_DETECTION = CANVAS_WIDTH_CONFIG / 4
 const SQUARE_SIZE_FOR_CLICK_DETECTION = Math.floor(M_FOR_CLICK_DETECTION / CUBE_DIMENSION_CONFIG)
 
-let cubeState = new CubeState()
+export let cubeState = new CubeState()
+
 let currentActiveStickerIndex = 0
 let allStickersAreNonDefault = false
 let shouldDrawCatch24Text = false
@@ -17,7 +18,7 @@ let preloadedReadmeContent = null
 
 // --- Initialization Layout (canvas) ---
 setupLayoutEnvironment('#cube-container', CANVAS_WIDTH_CONFIG)
-setOnLogoLoadCallback(updateAndRedrawAll)
+
 // --- Getting references to DOM elements---
 const canvasEl = document.querySelector('#cube-container canvas')
 const paletteContainer = document.getElementById('color-palette')
@@ -33,7 +34,7 @@ const readmeContainer = document.getElementById('readme-container')
 function initializeOrResetCubeState() {
 	positionCodeInput.style.color = ''
 	positionCodeInput.value = ''
-	positionCodeInput.style.fontFamily = '"Times New Roman", ""Times", serif'
+	positionCodeInput.style.fontFamily = '"Times New Roman", "Times", serif'
 	positionCodeInput.style.fontSize = '0.9em'
 
 	applyInputButton.style.background = 'linear-gradient(to right, #8A2BE2 25px, dodgerblue 40px)'
@@ -53,7 +54,7 @@ function handleApplyCode(isSolution) {
 	if (userInput === '') return
 
 	const cleanUserInput = userInput.replace(/\s*↩\s*$/, '')
-	const isPotentiallyMoves = /[FBUDLRw'23`>1]/.test(cleanUserInput)
+	const isPotentiallyMoves = /[FBUDLRw'23-`>1]/.test(cleanUserInput)
 	const isPotentiallyCatch24 = /^[a-x\s-]{18,}$/.test(userInput)
 
 	if (isPotentiallyMoves && !isPotentiallyCatch24) {
@@ -140,9 +141,9 @@ function handleCatch24Copy() {
 	}
 }
 
-function normalizeAndFormatMoveSequence(input) {
+export function normalizeAndFormatMoveSequence(input) {
 	let cleaned = input.replace(/\s+/g, '')
-	cleaned = cleaned.replace(/`/g, "'").replace(/’/g, "'").replace(/3/g, "'").replace(/1/g, '')
+	cleaned = cleaned.replace(/`/g, "'").replace(/’/g, "'").replace(/3/g, "'").replace(/1/g, '').replace(/-/g, "'")
 
 	const moveRegex = /[FBUDLR]w?['2]?/g
 	const moves = cleaned.match(moveRegex)
@@ -171,7 +172,9 @@ function normalizeAndFormatMoveSequence(input) {
 		else if (netTurns === 2) finalMoves.push(`${move.face}2`)
 		else if (netTurns === 3) finalMoves.push(`${move.face}'`)
 	}
-	return finalMoves.join(' ')
+	const res = finalMoves.join(' ')
+	window._lastNormalizedScramble = res
+	return res
 }
 
 function updateAndRedrawAll() {
@@ -338,6 +341,9 @@ function updateCatch24Display() {
 	applyCopyButton.disabled = !isComplete
 	if (isComplete) {
 		codeCatch24output.style.color = 'dodgerblue'
+		if (window._interceptorActive) {
+			window._lastBatchSig = code
+		}
 		shouldDrawCatch24Text = true
 	} else {
 		codeCatch24output.style.color = ''
@@ -354,16 +360,19 @@ function clearDiagnosticMessage() {
 }
 
 async function preloadReadme() {
-	try {
-		const response = await fetch('./readme.html')
-		if (!response.ok) {
-			throw new Error('Failed to fetch readme.html')
+	for (const url of ['./readme.html']) {
+		try {
+			const response = await fetch(url)
+			if (!response.ok) continue
+			const html = await response.text()
+			if (html.includes('id="cube-container"')) continue
+			preloadedReadmeContent = html
+			return
+		} catch (err) {
+			console.warn('Readme fetch:', url, err)
 		}
-		preloadedReadmeContent = await response.text()
-	} catch (error) {
-		console.error('Error preloading readme:', error)
-		preloadedReadmeContent = '<p>Failed to load file content.</p>'
 	}
+	preloadedReadmeContent = ''
 }
 
 // --- DYNAMIC UI CREATION ---
@@ -415,18 +424,16 @@ positionCodeInput.addEventListener('paste', (event) => {
 	input.value = input.value.substring(0, input.selectionStart) + pastedText + input.value.substring(input.selectionEnd)
 })
 
-titleHeader.addEventListener('click', () => {
+titleHeader.addEventListener('click', async () => {
 	if (readmeContainer.style.display === 'block') {
 		readmeContainer.style.display = 'none'
 		return
 	}
-	if (preloadedReadmeContent) {
-		readmeContainer.innerHTML = preloadedReadmeContent
-		readmeContainer.style.display = 'block'
-	} else {
-		readmeContainer.innerHTML = 'Content is loading...'
-		readmeContainer.style.display = 'block'
+	if (!preloadedReadmeContent) {
+		await preloadReadme()
 	}
+	readmeContainer.innerHTML = preloadedReadmeContent || '<p>Failed to load readme.html</p>'
+	readmeContainer.style.display = 'block'
 })
 
 initializeOrResetCubeState()

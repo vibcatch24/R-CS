@@ -1,4 +1,4 @@
-/* style.css ref 1.2 */
+/* style.css ref 1.3 */
 body {
 	display: flex;
 	justify-content: center;
@@ -82,7 +82,9 @@ body {
 	border-radius: 6px;
 	cursor: pointer;
 	box-shadow: none;
-	transition: background-color 0.2s, border-color 0.2s;
+	transition:
+		background-color 0.2s,
+		border-color 0.2s;
 	height: min-content;
 	margin-right: 10px;
 	align-self: flex-end;
@@ -94,6 +96,7 @@ body {
 	border-style: solid;
 	transform: none;
 }
+
 /* Reset */
 #controls button#reset-button {
 	position: absolute;
@@ -106,12 +109,17 @@ body {
 	border-radius: 15px;
 	background-color: #333;
 	color: #bbb;
-	transition: background-color 0.2s, border-color 0.2s;
+	transition:
+		background-color 0.2s,
+		border-color 0.2s;
 	height: min-content;
 }
 #controls button#reset-button:hover {
 	background-color: #444;
 	border-color: #777;
+}
+#controls button#reset-button:active {
+	margin-left: auto;
 }
 
 .code-field {
@@ -188,6 +196,8 @@ body {
 }
 
 .hotzone-button {
+	width: 75px;
+	justify-content: center;
 	border: 1px solid #00008b;
 	border-radius: 15px;
 	color: white;
@@ -221,6 +231,7 @@ body {
 	height: 28px;
 	stroke: currentColor;
 }
+
 /* "Input" */
 .hotzone-text {
 	padding: 8px 6px;
@@ -273,15 +284,109 @@ h1.title-header:hover {
 	color: #00aaff;
 }
 
-#controls button#reset-button:active {
-	margin-left: auto;
-}
-
 #catch24-button:not(:disabled):active,
 .hotzone-button:active,
 #apply-catch24-button:active,
+#batch-run-button:active,
 #color-palette button:active,
 #controls button#backspace-button:active {
 	box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.4);
 	transform: translateY(1px);
+}
+
+#batch-run-button {
+	width: 75px;
+	padding: 7px 10px;
+	border-radius: 15px;
+	border: 1px solid #555;
+	background-color: #0000ff;
+	color: #ffffff;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+	font-size: 1em;
+	font-weight: 500;
+	cursor: pointer;
+	transition:
+		background-color 0.2s,
+		border-color 0.2s,
+		filter 0.2s;
+}
+
+#batch-run-button:hover {
+	filter: brightness(1.2);
+	border-color: #777;
+}
+
+.status-field-row {
+	width: 400px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	box-sizing: border-box;
+	font-family: "Times New Roman", Times, serif;
+	font-size: 15px;
+}
+
+.symmetry-group,
+.metrics-group {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.status-label {
+	color: #ffc107;
+	font-weight: bold;
+}
+
+.symmetry-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: #f0f0f0;
+	background: #222222;
+	border: 1px solid #555;
+	padding: 3px 8px;
+	border-radius: 4px;
+	height: 18px;
+	text-align: center;
+	white-space: nowrap;
+	transition: color 0.2s ease;
+}
+
+.sym-pure {
+	color: #bbbbbb !important;
+}
+.sym-algebraic {
+	color: #ffb74d !important;
+}
+.sym-spatial {
+	color: #55ff55 !important;
+}
+
+#symmetry-value {
+	width: 90px;
+}
+
+#metrics-value {
+	width: 90px;
+}
+
+.batch-status-text {
+	font-size: 0.85em;
+	color: #4caf50;
+	font-family: "Menlo", "Consolas", monospace;
+	text-align: right;
+	width: 100%;
+	margin-top: 6px;
+}
+
+.batch-download-link {
+	color: #007bff;
+	text-decoration: underline;
+	font-weight: bold;
+	margin-left: 5px;
+}
+
+.batch-download-link:hover {
+	color: #0056b3;
 }
