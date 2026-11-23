@@ -164,7 +164,7 @@ The third control row contains tools for crystallographic classification, move s
 ### Batch Mode (`Batch`)
 * Clicking the **Batch** button allows loading a text or tab-separated file (`.txt`, `.tsv`, `.csv`) containing a list of move sequences or 18-character Catch-24 signatures.
 * R'CS automatically normalizes move sequences, deduplicates identical signatures and generates a downloadable **`rcs_signatures_output.tsv`** report with 7 columns:
-  `Scramble`, `Catch-24 Signature`, `Symmetry`, `Inv`, `t`, `q`, `f`.
+  `Scramble`, `Catch-24 Signature`, `Symmetry`, `{Inv}`, `t`, `q`, `f`.
 
   ![Batch Mode](image/tests/ex1.jpeg)
 
