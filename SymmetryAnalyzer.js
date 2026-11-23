@@ -646,7 +646,7 @@ export const SymmetryAnalyzer = {
 									const fVal = mData ? mData.f : ''
 									const note = isMismatch ? `\tExpected: ${baseSymmetry}` : ''
 
-									results.push(`${cleanScramble}\t${sig}\t${symClass}\t${invMark}\t${tVal}\t${qVal}\t${fVal}${note}`)
+									results.push(`${cleanScramble}\t${sig}\t${symClass}\t${invMark.replace(/[{}]/g, '')}\t${tVal}\t${qVal}\t${fVal}${note}`)
 								}
 
 								checkMismatches && mismatchCount
@@ -684,7 +684,7 @@ export const SymmetryAnalyzer = {
 						const shouldSave = window.confirm(`Report contains ${results.length.toLocaleString()} rows.\nSave TSV file now? (OK - yes, save / Cancel - no)`)
 						if (!shouldSave) return
 
-						const header = checkMismatches ? 'Scramble\tCatch-24 Signature\tSymmetry\tInv\tt\tq\tf\tAudit' : 'Scramble\tCatch-24 Signature\tSymmetry\tInv\tt\tq\tf'
+						const header = checkMismatches ? 'Scramble\tCatch-24 Signature\tSymmetry\t{Inv}\tt\tq\tf\tAudit' : 'Scramble\tCatch-24 Signature\tSymmetry\t{Inv}\tt\tq\tf'
 						const tsv = [header, ...results].join('\n')
 						const blob = new Blob([tsv], { type: 'text/tab-separated-values;charset=utf-8;' })
 
