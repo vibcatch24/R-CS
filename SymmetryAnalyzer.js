@@ -412,18 +412,18 @@ export const SymmetryAnalyzer = {
 			return { symClass, invMark: '↩', sigInverse }
 		}
 
-		// Check general mirror anti-involution ('⇄') across all improper operations in Oh
-		for (let i = 0; i < OH_SYMMETRIES.length; i++) {
-			const op = OH_SYMMETRIES.at(i)
-			if (!op.perm.isMirror) continue
-
-			const mirroredDetailedInv = multiplySym(op.perm, multiplySym(pDetailedInv, op.inv))
-			const mirroredSlotInv = toDetailed(mirroredDetailedInv)
-			const sigMirroredInverse = getCatch24FromSlotCubie(mirroredSlotInv)
-
-			if (sigDirect === sigMirroredInverse) {
-				return { symClass, invMark: '⇄', sigInverse }
+		const antiOps = []
+		for (const op of OH_SYMMETRIES) {
+			const conj = multiplySym(op.perm, multiplySym(pDetailed, op.inv))
+			const sigConj = getCatch24FromSlotCubie(toDetailed(conj))
+			if (sigConj === sigInverse) {
+				antiOps.push(op)
 			}
+		}
+
+		if (antiOps.length > 0) {
+			const superGroup = identifyKociembaClass([...matchedOps, ...antiOps])
+			return { symClass, invMark: `{${superGroup}}`, sigInverse }
 		}
 
 		return { symClass, invMark: '', sigInverse }
