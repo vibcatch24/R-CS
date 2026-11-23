@@ -254,14 +254,14 @@
 
 		<h3>Schoenflies Symmetry &amp; Reversibility (<code>Symmetry:</code>)</h3>
 		<ul>
-			<li>Automatically classifies any legitimate cube state into one of the 31 achievable Schoenflies point symmetry groups (according to Herbert Kociemba's table <a href="http://kociemba.org" target="_blank" rel="noopener">kociemba.org/symmetric2.htm</a>, from the asymmetric group C1 to the full octahedral group Oh).</li>
-			<li>Displays an additional indicator <code>Inv</code> when applicable:
+			<li>Automatically classifies any legitimate cube state into one of the 31 achievable Schoenflies point symmetry groups (according to Herbert Kociemba's classification, from the asymmetric group <code>C1</code> to the full octahedral group <code>Oh</code>).</li>
+			<li>Displays an additional indicator when the inverse sequence generates the same or anti-symmetric state:
 				<ul>
-					<li><code>↩</code> — <strong>Direct Reversibility / Involution:</strong> the inverse state has the identical Catch-24 signature (<code>S(P) = S(P⁻¹)</code>).</li>
-					<li><code>⇄</code> — <strong>Mirror Anti-Involution (Antisymmetry):</strong> the inverse sequence produces a mirror-reflected twin of the original pattern (<code>M · P · M⁻¹ = P⁻¹</code>).</li>
+					<li><code>&#8617;</code> &mdash; <strong>Direct Involution:</strong> the inverse sequence generates the exact same fixed-center position (<code>S(P) = S(P<sup>&minus;1</sup>)</code>, i.e., <code>P = P<sup>&minus;1</sup></code>).</li>
+					<li><code>{Group}</code> (e.g., <code>S4 {C4h}</code>) &mdash; <strong>Antisymmetry Supergroup:</strong> when <code>P &ne; P<sup>&minus;1</sup></code> and a non-empty set <code>A = {g &isin; O<sub>h</sub> | g &middot; P &middot; g<sup>&minus;1</sup> = P<sup>&minus;1</sup>}</code> exists, displays the doubled-order Schoenflies supergroup <code>H&#771; = H &cup; A</code> in Kociemba's notation (see <a href="appendix.html" target="_blank">Mathematical Appendix</a>).</li>
 				</ul>
 			</li>
-		</ul>
+		</ul>		
 
 		<h3>Move Sequence Metrics (<code>Metrics:</code>)</h3>
 		<ul>

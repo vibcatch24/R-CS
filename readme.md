@@ -148,10 +148,11 @@ Standard face notations:
 The third control row contains tools for crystallographic classification, move sequence metrics, and batch processing of datasets:
 
 ### Schoenflies Symmetry & Reversibility (`Symmetry:`)
-* Automatically classifies any legitimate cube state into one of the 31 achievable Schoenflies point symmetry groups (according to Herbert Kociemba's table kociemba.org/symmetric2.htm, from the asymmetric group C1 to the full octahedral group Oh).
-* Displays an additional indicator `Inv` when applicable:
-  * `↩` — **Direct Reversibility / Involution:** the inverse state has the identical Catch-24 signature (`S(P) = S(P⁻¹)`).
-  * `⇄` — **Mirror Anti-Involution (Antisymmetry):** the inverse sequence produces a mirror-reflected twin of the original pattern (`M · P · M⁻¹ = P⁻¹`).
+* Automatically classifies any legitimate cube state into one of the 31 achievable Schoenflies point symmetry groups (according to Herbert Kociemba's classification, from the asymmetric group `C1` to the full octahedral group `Oh`).
+* Displays an additional indicator when the inverse sequence generates the same or anti-symmetric state:
+  * `↩` — **Direct Involution:** the inverse sequence generates the exact same fixed-center position (`S(P) = S(P⁻¹)`, i.e., `P = P⁻¹`).
+  * `{Group}` (e.g., `S4 {C4h}`) — **Antisymmetry Supergroup:** when `P ≠ P⁻¹` and a non-empty set `A = {g ∈ O_h | g · P · g⁻¹ = P⁻¹}` exists, displays the doubled-order Schoenflies supergroup `H̃ = H ∪ A` in Kociemba's notation (see [Mathematical Appendix](appendix.html)).
+
 
 ### Move Sequence Metrics (`Metrics:`)
 * When a move sequence is entered, the right indicator displays its length in three metrics formatted as `(xxt, xxq, xxf)`:
